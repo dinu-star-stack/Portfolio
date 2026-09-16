@@ -1087,6 +1087,18 @@
     width: 55%;
 }
 
+.skill-fill.canva {
+    width: 35%;
+}
+
+.skill-fill.figma {
+    width: 30%;
+}
+
+.skill-fill.illustrator {
+    width: 25%;
+}
+
 
 /* Skill Tags */
 
