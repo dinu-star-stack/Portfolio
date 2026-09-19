@@ -1087,11 +1087,15 @@
     width: 55%;
 }
 
-.skill-fill.canva {
+.skill-fill.figma {
     width: 35%;
 }
 
-.skill-fill.figma {
+.skill-fill.adobe xd {
+    width:10%;
+}
+
+.skill-fill.canva {
     width: 30%;
 }
 
