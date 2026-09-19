@@ -1060,7 +1060,7 @@
 }
 
 .skill-fill.javascript {
-    width: 55%;
+    width: 15%;
 }
 
 .skill-fill.cpp {
@@ -1083,16 +1083,12 @@
     width: 75%;
 }
 
-.skill-fill.javascript-2 {
-    width: 55%;
-}
-
 .skill-fill.figma {
     width: 35%;
 }
 
 .skill-fill.adobe xd {
-    width:10%;
+    width:5%;
 }
 
 .skill-fill.canva {
