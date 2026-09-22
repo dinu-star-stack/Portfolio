@@ -1581,42 +1581,6 @@ body {
     animation: decorationFloat 3s ease-in-out infinite reverse;
 }
 
-/* ================================
-   Animations
-================================ */
-
-@keyframes photoFloat {
-    0%, 100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-@keyframes photoGlow {
-    0%, 100% {
-        opacity: 0.14;
-        transform: scale(1);
-    }
-
-    50% {
-        opacity: 0.23;
-        transform: scale(1.08);
-    }
-}
-
-@keyframes decorationFloat {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
-    }
-
-    50% {
-        transform: translateY(-15px) rotate(10deg);
-    }
-}
-
 
 /* ================================
    Scroll
