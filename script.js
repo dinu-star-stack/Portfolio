@@ -1,219 +1,323 @@
-// ===============================
-// Attendance Management System
-// ===============================
+/* =========================================================
+   PORTFOLIO PROJECT VIDEO SYSTEM
+========================================================= */
 
-const viewProjectBtn = document.getElementById("viewProjectBtn");
-const projectPopup = document.getElementById("projectPopup");
-const popupClose = document.getElementById("popupClose");
-const popupImage = document.getElementById("popupImage");
-const previousImage = document.getElementById("previousImage");
-const nextImage = document.getElementById("nextImage");
-const imageCounter = document.getElementById("imageCounter");
+document.addEventListener("DOMContentLoaded", function () {
 
-const projectImages = [
-    "images/attendance-login.png",
-    "images/attendance-admin.png",
-    "images/attendance-lecturer.png",
-    "images/attendance-student.png",
-    "images/attendance-qr.png"
-];
+    const projectVideoPopup =
+        document.getElementById("projectVideoPopup");
 
-let currentImage = 0;
+    const projectVideoPlayer =
+        document.getElementById("projectVideoPlayer");
 
-function showAttendanceImage() {
-    popupImage.src = projectImages[currentImage];
+    const projectVideoSource =
+        document.getElementById("projectVideoSource");
 
-    imageCounter.textContent =
-        (currentImage + 1) + " / " + projectImages.length;
-}
+    const projectVideoTitle =
+        document.getElementById("projectVideoTitle");
 
-if (viewProjectBtn && projectPopup) {
+    const projectVideoClose =
+        document.getElementById("projectVideoClose");
 
-    viewProjectBtn.addEventListener("click", function (event) {
-        event.preventDefault();
+    const videoProjectButtons =
+        document.querySelectorAll(".video-project-link");
 
-        projectPopup.classList.add("active");
+    const projectPreviewVideos =
+        document.querySelectorAll(".project-preview-video");
 
-        currentImage = 0;
-        showAttendanceImage();
+
+    /* =====================================================
+       VIDEO PREVIEWS
+    ===================================================== */
+
+    projectPreviewVideos.forEach(function (video) {
+
+        /*
+         * Videos are muted and autoplay is enabled in HTML.
+         * These events also provide better behaviour on desktop.
+         */
+
+        video.addEventListener("mouseenter", function () {
+
+            video.play().catch(function () {
+                // Browser may block playback.
+            });
+
+        });
+
+
+        video.addEventListener("mouseleave", function () {
+
+            /*
+             * Keep the preview playing because autoplay
+             * provides a continuous project preview.
+             *
+             * No reset is performed here so the video does
+             * not jump back unexpectedly.
+             */
+
+        });
+
     });
-}
-
-if (popupClose) {
-    popupClose.addEventListener("click", function () {
-        projectPopup.classList.remove("active");
-    });
-}
-
-if (nextImage) {
-    nextImage.addEventListener("click", function () {
-
-        currentImage++;
-
-        if (currentImage >= projectImages.length) {
-            currentImage = 0;
-        }
-
-        showAttendanceImage();
-    });
-}
-
-if (previousImage) {
-    previousImage.addEventListener("click", function () {
-
-        currentImage--;
-
-        if (currentImage < 0) {
-            currentImage = projectImages.length - 1;
-        }
-
-        showAttendanceImage();
-    });
-}
 
 
-// ===============================
-// Student Management System
-// ===============================
+    /* =====================================================
+       OPEN PROJECT VIDEO
+    ===================================================== */
 
-const viewStudentProjectBtn =
-    document.getElementById("viewStudentProjectBtn");
+    function openProjectVideo(videoPath, videoTitle) {
 
-const studentProjectImages = [
-    "images/login.png",
-    "images/course.png",
-    "images/student.png",
-    "images/lecturer.png",
-    "images/batch.png"
-];
-
-let currentStudentImage = 0;
-
-
-// Create Student Management popup
-if (viewStudentProjectBtn) {
-
-    viewStudentProjectBtn.addEventListener("click", function (event) {
-
-        event.preventDefault();
-
-        currentStudentImage = 0;
-
-        const studentPopup = document.createElement("div");
-
-        studentPopup.className = "project-popup active";
-
-        studentPopup.innerHTML = `
-            <div class="popup-content">
-
-                <button class="popup-close student-popup-close">
-                    &times;
-                </button>
-
-                <img id="studentPopupImage"
-                     src="${studentProjectImages[0]}"
-                     alt="Student Management System Screenshot">
-
-                <div class="popup-controls">
-
-                    <button id="studentPreviousImage">
-                        ←
-                    </button>
-
-                    <span id="studentImageCounter">
-                        1 / 5
-                    </span>
-
-                    <button id="studentNextImage">
-                        →
-                    </button>
-
-                </div>
-
-            </div>
-        `;
-
-        document.body.appendChild(studentPopup);
-
-
-        const studentPopupImage =
-            document.getElementById("studentPopupImage");
-
-        const studentImageCounter =
-            document.getElementById("studentImageCounter");
-
-        const studentPreviousImage =
-            document.getElementById("studentPreviousImage");
-
-        const studentNextImage =
-            document.getElementById("studentNextImage");
-
-        const studentPopupClose =
-            studentPopup.querySelector(".student-popup-close");
-
-
-        function showStudentImage() {
-
-            studentPopupImage.src =
-                studentProjectImages[currentStudentImage];
-
-            studentImageCounter.textContent =
-                (currentStudentImage + 1) +
-                " / " +
-                studentProjectImages.length;
+        if (
+            !projectVideoPopup ||
+            !projectVideoPlayer ||
+            !projectVideoSource ||
+            !projectVideoTitle
+        ) {
+            return;
         }
 
 
-        studentNextImage.addEventListener("click", function () {
+        projectVideoSource.src = videoPath;
 
-            currentStudentImage++;
+        projectVideoTitle.textContent =
+            videoTitle || "Project Demo";
+
+
+        projectVideoPlayer.load();
+
+
+        projectVideoPopup.classList.add("active");
+
+        projectVideoPopup.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        document.body.classList.add("no-scroll");
+
+
+        projectVideoPlayer.play().catch(function () {
+            // User can manually press play if autoplay is blocked.
+        });
+
+    }
+
+
+    /* =====================================================
+       PROJECT VIDEO BUTTONS
+    ===================================================== */
+
+    videoProjectButtons.forEach(function (button) {
+
+        button.addEventListener("click", function () {
+
+            const videoPath =
+                button.getAttribute("data-video");
+
+            const videoTitle =
+                button.getAttribute("data-title");
+
+
+            if (!videoPath) {
+                return;
+            }
+
+
+            openProjectVideo(
+                videoPath,
+                videoTitle
+            );
+
+        });
+
+    });
+
+
+    /* =====================================================
+       CLOSE PROJECT VIDEO
+    ===================================================== */
+
+    function closeProjectVideo() {
+
+        if (!projectVideoPopup) {
+            return;
+        }
+
+
+        projectVideoPopup.classList.remove("active");
+
+        projectVideoPopup.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        if (projectVideoPlayer) {
+
+            projectVideoPlayer.pause();
+
+            projectVideoPlayer.currentTime = 0;
+
+        }
+
+
+        if (projectVideoSource) {
+
+            projectVideoSource.src = "";
+
+        }
+
+
+        if (projectVideoPlayer) {
+
+            projectVideoPlayer.load();
+
+        }
+
+
+        document.body.classList.remove("no-scroll");
+
+    }
+
+
+    /* =====================================================
+       CLOSE BUTTON
+    ===================================================== */
+
+    if (projectVideoClose) {
+
+        projectVideoClose.addEventListener(
+            "click",
+            closeProjectVideo
+        );
+
+    }
+
+
+    /* =====================================================
+       CLICK OUTSIDE POPUP
+    ===================================================== */
+
+    if (projectVideoPopup) {
+
+        projectVideoPopup.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target ===
+                    projectVideoPopup
+                ) {
+
+                    closeProjectVideo();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ESCAPE KEY
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
 
             if (
-                currentStudentImage >=
-                studentProjectImages.length
+                event.key === "Escape" &&
+                projectVideoPopup &&
+                projectVideoPopup.classList.contains("active")
             ) {
-                currentStudentImage = 0;
+
+                closeProjectVideo();
+
             }
 
-            showStudentImage();
-        });
+        }
+    );
 
 
-        studentPreviousImage.addEventListener("click", function () {
+    /* =====================================================
+       NAVIGATION ACTIVE STATE
+    ===================================================== */
 
-            currentStudentImage--;
+    const sections =
+        document.querySelectorAll("section[id]");
 
-            if (currentStudentImage < 0) {
-                currentStudentImage =
-                    studentProjectImages.length - 1;
+    const navLinks =
+        document.querySelectorAll(".nav-links a");
+
+
+    function updateActiveNavigation() {
+
+        let currentSection = "";
+
+
+        sections.forEach(function (section) {
+
+            const sectionTop =
+                section.offsetTop - 150;
+
+            const sectionHeight =
+                section.offsetHeight;
+
+            if (
+                window.scrollY >= sectionTop &&
+                window.scrollY <
+                sectionTop + sectionHeight
+            ) {
+
+                currentSection =
+                    section.getAttribute("id");
+
             }
 
-            showStudentImage();
         });
 
 
-        studentPopupClose.addEventListener("click", function () {
+        navLinks.forEach(function (link) {
 
-            studentPopup.remove();
-
-        });
+            link.classList.remove("active");
 
 
-        // Close popup when clicking outside the popup content
-        studentPopup.addEventListener("click", function (event) {
+            const href =
+                link.getAttribute("href");
 
-            if (event.target === studentPopup) {
-                studentPopup.remove();
+
+            if (
+                href ===
+                "#" + currentSection
+            ) {
+
+                link.classList.add("active");
+
             }
 
         });
 
-    });
-}
+    }
 
 
-// ===============================
-// Portfolio
-// ===============================
+    window.addEventListener(
+        "scroll",
+        updateActiveNavigation
+    );
 
-console.log("Portfolio website loaded successfully.");
+
+    updateActiveNavigation();
+
+
+    /* =====================================================
+       PORTFOLIO LOADED
+    ===================================================== */
+
+    console.log(
+        "Portfolio website loaded successfully."
+    );
+
+});
